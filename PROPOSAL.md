@@ -134,21 +134,18 @@ Notionboard template for building projects ( You can use this for any project )
 https://www.notion.so/GA-Unit-3-Tunr-Lab-da2c82fafd4e4a7aa654676732db9ee3
 
 #### Timeline - Daily Accountability
-Example of a Timeline to keep organized and on task for hitting goals every single day you’re on the sprint for your project.
-
-Create your own table using this markdown table generator website:
+Timeline to keep organized 
 https://www.tablesgenerator.com/markdown_tables
 
 Do not neglect to plan, you will thank yourself later for being proactive!
-| Day        |     | Task                               | Blockers | Notes/ Thoughts |
-| ---------- | --- | ---------------------------------- | -------- | --------------- |
-| Thursday   |     | Create and present proposal        |          |                 |
-| Friday     |     | Create html, js, css files         |          |                 |
-| Saturday   |     | Create basic scaffolding           |          |                 |
-| Sunday     |     | Add functionality                  |          |                 |
-| Monday     |     | Add styling                        |          |                 |
-| Tuesday    |     | Finaliza MVP                       |          |                 |
-| Wedenesday |     | Work on stretch goals              |          |                 |
-| Thursday   |     | Work on icebox items if applicable |          |                 |
-| Friday     |     | Presentation Day!                  |          |                 |
-|            |     |                                    |          |                 |
+| Day            | Done | Tasks                      | Blockers                         | Notes/Thoughts |
+|----------------|------|----------------------------|----------------------------------|----------------|
+| Thursday 11/31 |      | Create html, js, css files |                                  |                |
+| Friday   12/1  |      | Make the Proposal          | Knowing the exact psudeocode     |                |
+| Saturday. 12/2 |      | Make The Canvas / Images   |                                  | Get GPT IMAGES |
+| Sunday  12/3   |      | Create Abstract Code       |                                  |                |
+| Monday  12/4   |      | Make Functionality         | Target, and tracking             |                |
+| Tuesday. 12/5  |      | Finialize MVP              |                                  |                |
+| Wednesday 12/6 |      | Add Styling                |                                  |                |
+| Thursday 12/7  |      | Work on Stretch Goals      | Need more time for functionality |                |
+| Friday. 12/8   |      | Presentation Day!          |                                  |                |
