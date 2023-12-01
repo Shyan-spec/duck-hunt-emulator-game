@@ -10,10 +10,12 @@ My app is called Duck Hunt Emulator. It's a game app for players who want to go 
 
 **Initial Landing View**
 
+![Alt text](image-1.png)
+
 --------------------------------------
 
 **Results View**
-
+![Alt text](image-2.png)
 --------------------------------------
 
 ## User Stories
