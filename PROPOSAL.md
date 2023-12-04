@@ -47,7 +47,6 @@ My app is called Duck Hunt Emulator. It's a game app for players who want to go 
 ```
 1) Define the required variables used to track the state of the game
     1a) a varible that actally start the game so the player is prepared
-    1a) create a variable that creates the pixel board
     2b) create a variable that keeps track of score 
     3c) create a variable that keeps track of hit boxes left
     4d) keeps track of how many shots the player has left
@@ -72,8 +71,6 @@ render
      3a) Create a function called `init`.
 
    3b) Call this `init` function when the app loads.
-  
-    3c)!!!! Set the `pixel grid` variable to create the game board
 
    3d) Set the player `start`` to false until the player clicks the start button to set it to true and start the timer
 
