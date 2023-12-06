@@ -1,6 +1,6 @@
 /*-------------------------------- Constants --------------------------------*/
-const countDownTimer = 3;
-const perSet = 3;
+const countDownTimer = 1;
+const perSet = 4;
 const grid = 18;
 resetShots = 5;
 
@@ -90,14 +90,12 @@ const trackTime = () => {
     console.log(timeLeft)
     console.log(pixelEls)
 
-    if (timeLeft > 0 && timeLeft % 3 === 0 && pixelEls.length > 0) {
+    if (timeLeft > 0 && timeLeft % 7 === 0 && pixelEls.length > 0) {
       pixelEls.length = 0
       squareEl.innerHTML = '';
       updateBoard();
     }
-    else{
-      console.log("here")
-    }
+    
 
     if (timeLeft === 0) {
       clearInterval(localCountDownInterval);
@@ -125,38 +123,39 @@ const trackShotsLeft = (pixel) => {
 };
 
 
-  
-
-
-
 
 const updateBoard = () => {
 
 
   for (let i = 0; i < perSet; i++) {
-   const pixelEl = document.createElement("div");
-
-    const randomRow = Math.floor(Math.random() * grid + 1);
-    const randomColumn = Math.floor(Math.random() * grid + 1);
-
-    pixelEl.style.gridArea = `${randomRow} / ${randomColumn}`;
-    pixelEl.style.backgroundColor = "black";
+    const gridContainer = document.querySelector('.grid');
+    const duck = document.createElement('div');
+    duck.classList.add(`duck-${i}`);
+    document.querySelector('.Play-space').appendChild(duck);
+    pixelEls.push(duck)
     
-    pixelEl.id = `sq-${i}`
+    const startX = Math.floor(Math.random() * (gridContainer.clientWidth - duck.clientWidth));
+    const startY = 0;
+    
+    
+    duck.style.left = `${startX}px`;
+    duck.style.bottom = `${startY}px`;
 
-    squareEl.appendChild(pixelEl);
-    pixelEls.push(pixelEl)
-
-    pixelEl.addEventListener("click", () => {
-        trackShotsLeft(i)
-      });
-
-      
+    animateDuck(duck);
+   
   }
 
-  
+  addDuckEventListeners(); 
   return pixelEls
   
+};
+
+const addDuckEventListeners = () => {
+  pixelEls.forEach((duck, i) => {
+    duck.addEventListener("click", () => {
+      trackShotsLeft(i);
+    });
+  });
 };
 
 const minusShots = () => {
@@ -237,4 +236,50 @@ squareEl.addEventListener("click", (e) => {
   
 
 })
+
+
+function animateDuck(duck) {
+  let endY = 0;
+    const gridContainer = document.querySelector('.grid');
+    const duckWidth = duck.clientWidth;
+
+    duck.style.transition = 'bottom 1s linear';
+
+    const intervalIdX = setInterval(() => {
+        let endX = Math.floor(Math.random() * (gridContainer.clientWidth - duckWidth));
+
+        duck.style.left = `${endX}px`;
+        
+
+        if (endY >= 562) {
+            // Duck has reached the top, you can remove it or handle scoring here
+           
+            clearInterval(intervalIdX); // Stop the interval
+            duck.remove();
+        }
+    }, 1050); // Update every 1000 milliseconds
+      
+    //TODO : Just move them below so when they come out they are divided
+
+    const intervalIdY = setInterval(() => {
+      duck.style.transition = 'left 1s linear';
+      let increment = Math.floor(Math.random() * 3); // Random increment between 0 and 2
+
+        if (increment <= 1) {
+            endY += 21; // Increment endY by 5 if the random value is 0 or 1 (up)
+        } else {
+            endY -= 10; // Decrement endY by 5 if the random value is 2 (down)
+        }
+      duck.style.bottom = `${endY}px`;
+
+      if (endY >= 562) {
+          // Duck has reached the top, you can remove it or handle scoring here
+          
+          clearInterval(intervalIdY); // Stop the interval
+          duck.remove();
+      }
+  }, 90); // Update every 1000 milliseconds
+}
+
+
 
