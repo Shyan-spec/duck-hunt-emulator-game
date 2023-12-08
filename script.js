@@ -5,6 +5,7 @@ const grid = 18;
 resetShots = 25;
 let add = 0
 let soundPlayed = false;
+let title = true;
 
 /*---------------------------- Variables (state) ----------------------------*/
 let pixelEls = []
@@ -27,6 +28,7 @@ const playButton = document.querySelector("#start-reset");
 const squareEl = document.querySelector(".Play-space");
 const childElements = squareEl.querySelectorAll("*");
 const gridContainer = document.querySelector('.grid');
+const emptySpace = document.querySelector(".empty-space")
 const startcountDownElement = document.getElementById("countdown");
 const titleText = document.getElementById("main-title")
 const windSound = new Audio("assets/wind-howling-softly-in-vast-space-smartsound-fx-1-01-34.mp3")
@@ -54,10 +56,11 @@ duckSound.loop = true;
 
 
 const init = () => {
+  title = true;
   start = true;
   score = 0;
   shotsLeft = 25;
-  timer = 60;
+  timer = 30;
   gameOverMessage.textContent = ''
   render();
 
@@ -71,7 +74,11 @@ const updateMessage = () => {
 };
 
 const startGame = () => {
-  gridContainer.removeChild(titleText)
+  if(title) {
+    gridContainer.removeChild(titleText)
+    title = false;
+    
+  }
   let countdown = countDownTimer;
 
   const startcountDownElement = document.createElement('div');
@@ -128,7 +135,7 @@ const trackTime = () => {
     timerMessage.textContent = `TIME: ${timeLeft}`;
     
 
-    if (timeLeft > 0 && timeLeft % 8 === 0 && pixelEls.length > 0) {
+    if (timeLeft > 0 && timeLeft % 10 === 0 && pixelEls.length > 0) {
       pixelEls.length = 0
       squareEl.innerHTML = '';
       updateBoard();
@@ -194,6 +201,7 @@ const render = () => {
 
 const gameOver = () => { 
   clearInterval(countDownInterval)
+  title = true;
   start = false;
   timerMessage.textContent = ``;
   scoreMessage.textContent = ``;
@@ -202,20 +210,46 @@ const gameOver = () => {
 
   if(shotsLeft === 0){
     
-    gameOverMessage.textContent = `Game Over! \n Out of Shots, your score is ${score} `
-    
+    gameOverMessage.textContent = `Out of Shots, your score is ${score} `
+    playButton.textContent = "RESET"
+    playButton.style.bottom = `-50px`;
 
     squareEl.innerHTML = '';
     pixelEls = []
+
+    titleText.textContent = "GAME OVER"
+    gridContainer.appendChild(titleText)
+
+    gameOverMessage.style.position = 'relative';
+    gameOverMessage.style.bottom = '136px';
+    gameOverMessage.style.left = '146px';
+    gameOverMessage.style.color = 'darkgreen';
+    gridContainer.appendChild(gameOverMessage)
+
+    playButton.style.left = '335px'
+    playButton.style.top = '100px'
     document.body.append(playButton)
   }
   else if(timeLeft === 0){
-    gameOverMessage.textContent = `Game Over! \n Out of Time, your score is ${score} `
 
+    gameOverMessage.textContent = ` Out of Time, your score is ${score} `
+    playButton.textContent = "RESET"
+    playButton.style.bottom = `-50px`;
     squareEl.innerHTML = '';
     pixelEls = []
-   
-    document.body.append(playButton)
+    titleText.textContent = "GAME OVER"
+
+    gridContainer.appendChild(titleText)
+
+    gameOverMessage.style.position = 'relative';
+    gameOverMessage.style.bottom = '136px';
+    gameOverMessage.style.left = '146px';
+    gameOverMessage.style.color = 'black';
+    emptySpace.appendChild(gameOverMessage)
+
+    playButton.style.left = '335px'
+    playButton.style.top = '100px'
+    emptySpace.appendChild(playButton)
     
   }
   
@@ -292,7 +326,7 @@ function animateDuck(duck) {
             clearInterval(intervalIdX); // Stop the interval
             duck.remove();
         }
-    }, 1050); // Update every 1000 milliseconds
+    }, 800); // Update every 1000 milliseconds
       
     //TODO : Just move them below so when they come out they are divided
 
@@ -307,7 +341,7 @@ function animateDuck(duck) {
           duck.style.backgroundSize = 'contain';
           duck.style.backgroundRepeat = 'no-repeat'; 
           duck.style.transition = 'left 1s linear';
-            endY += 25; // Increment endY by 5 if the random value is 0 or 1 (up)
+            endY += 20;
         } else {
           const svgFileName = `duck-downstroke-${JSON.parse(duck.dataset.duckInstance).breed}.svg`;
           duck.style.background = `url('assets/${svgFileName}')`;
@@ -324,7 +358,7 @@ function animateDuck(duck) {
           clearInterval(intervalIdY); // Stop the interval
           duck.remove();
       }
-  }, 100); // Update every 1000 milliseconds
+  }, 150); // Update every 1000 milliseconds
 }
 
 const updateBoard = () => {
@@ -411,27 +445,22 @@ class Duck {
 
 class BasicDuck extends Duck {
   constructor(){
-    super('basic',1, 'yellow', 120, 100)
+    super('basic',1, 'yellow', 200, 100)
   }
 }
 
 class AdvancedDuck extends Duck {
   constructor(){
-    super('advanced',1, 'orange', 90, 200)
+    super('advanced',1, 'orange', 180, 200)
   }
 }
 
 class ExpertDuck extends Duck {
   constructor(){
-    super('expert', 2, 'red', 100, 500)
+    super('expert', 2, 'red', 160, 500)
   }
 
 }
-
-
-
-
-
 
 
 
