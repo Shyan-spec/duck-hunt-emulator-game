@@ -4,6 +4,7 @@ const perSet = 4;
 const grid = 18;
 resetShots = 25;
 let add = 0
+let soundPlayed = false;
 
 /*---------------------------- Variables (state) ----------------------------*/
 let pixelEls = []
@@ -25,13 +26,32 @@ const shotsLeftMessage = document.querySelector("#shots");
 const playButton = document.querySelector("#start-reset");
 const squareEl = document.querySelector(".Play-space");
 const childElements = squareEl.querySelectorAll("*");
-const gridContainer = document.querySelector('.grid')
+const gridContainer = document.querySelector('.grid');
+const startcountDownElement = document.getElementById("countdown");
+const titleText = document.getElementById("main-title")
+const windSound = new Audio("assets/wind-howling-softly-in-vast-space-smartsound-fx-1-01-34.mp3")
+const duckSound = new Audio("assets/ducks-quacking-flapping-wings-smartsound-fx-1-00-04.mp3")
+const fireSound = new Audio("assets/gunshot-bolt-action-rifle-fascinatedsound-3-3-00-03.mp3")
+windSound.loop = true;
+duckSound.loop = true;
 //rename code
 //color them
 // rdaomize them
 //const countTimerElement = document.getElementById('timer')
 
 /*-------------------------------- Functions --------------------------------*/
+
+  document.addEventListener("mousemove", () => {
+    if (!soundPlayed) {
+      windSound.play();
+      
+      soundPlayed = true;
+    }
+  }
+  )
+
+
+
 
 const init = () => {
   start = true;
@@ -40,7 +60,7 @@ const init = () => {
   timer = 60;
   gameOverMessage.textContent = ''
   render();
-  
+
 };
 
 
@@ -51,6 +71,7 @@ const updateMessage = () => {
 };
 
 const startGame = () => {
+  gridContainer.removeChild(titleText)
   let countdown = countDownTimer;
 
   const startcountDownElement = document.createElement('div');
@@ -61,13 +82,16 @@ const startGame = () => {
 
    countDownInterval = setInterval(() => {
     countdown--;
-
+    
     startcountDownElement.textContent = countdown;
     
 
     if (countdown === 0) {
-      gridContainer.removeChild(startcountDownElement)
+      gridContainer.removeChild(startcountDownElement);
+      
       init();
+      windSound.pause()
+      duckSound.play()
       gridContainer.style.cursor =  `url("crosshair-removebg-preview.png") 64 64, crosshair`;
       trackTime();
       clearInterval(countDownInterval);
@@ -114,7 +138,7 @@ const trackTime = () => {
     if (timeLeft === 0) {
       clearInterval(localCountDownInterval);
       gameOver()
-      
+      duckSound.pause()
     }
   }, 1000);
 };
@@ -125,7 +149,7 @@ const addLives  = () => {
 
 const trackShotsLeft = (clickedDuckIndex) => {
   
-
+  fireSound.play()
   if(JSON.parse(pixelEls[clickedDuckIndex].dataset.duckInstance).lives === 2) {
     addLives()
     if(add === 2) {
@@ -165,7 +189,6 @@ const minusShots = () => {
 const render = () => {
   updateMessage();
   updateBoard();
-  
 };
 
 
@@ -210,18 +233,20 @@ playButton.addEventListener("click", playButton.remove);
 
 //move parse outside global
 squareEl.addEventListener("click", (e) => {
-
   if(start && shotsLeft > 0 ){
   const clickedPixel = pixelEls.includes(element => element.id === e.target.id);
 
   if (clickedPixel) {
     minusShots()
-    console.log(shotsLeft);
+    
+    
+      
+    
     shotsLeftMessage.textContent = `SHOTS: ${shotsLeft}`;
       trackShotsLeft(clickedPixel);
   } else {
       minusShots()
-      console.log(shotsLeft);
+      
       shotsLeftMessage.textContent = `SHOTS: ${shotsLeft}`;
       
   }
@@ -251,6 +276,7 @@ function animateDuck(duck) {
   let endY = 0;
     const gridContainer = document.querySelector('.grid');
     const duckWidth = duck.clientWidth;
+    
 
     duck.style.transition = 'bottom 1s linear';
 
@@ -266,17 +292,28 @@ function animateDuck(duck) {
             clearInterval(intervalIdX); // Stop the interval
             duck.remove();
         }
-    }, 2050); // Update every 1000 milliseconds
+    }, 1050); // Update every 1000 milliseconds
       
     //TODO : Just move them below so when they come out they are divided
 
     const intervalIdY = setInterval(() => {
+      
       duck.style.transition = 'left 1s linear';
       let increment = Math.floor(Math.random() * 3); // Random increment between 0 and 2
 
         if (increment <= 1) {
+          const svgFileName = `duck-upstroke-${JSON.parse(duck.dataset.duckInstance).breed}.svg`;
+          duck.style.background = `url('assets/${svgFileName}')`;
+          duck.style.backgroundSize = 'contain';
+          duck.style.backgroundRepeat = 'no-repeat'; 
+          duck.style.transition = 'left 1s linear';
             endY += 25; // Increment endY by 5 if the random value is 0 or 1 (up)
         } else {
+          const svgFileName = `duck-downstroke-${JSON.parse(duck.dataset.duckInstance).breed}.svg`;
+          duck.style.background = `url('assets/${svgFileName}')`;
+          duck.style.backgroundSize = 'contain';
+          duck.style.backgroundRepeat = 'no-repeat'; 
+          duck.style.transition = 'left 1s linear';
             endY -= 10; // Decrement endY by 5 if the random value is 2 (down)
         }
       duck.style.bottom = `${endY}px`;
@@ -287,7 +324,7 @@ function animateDuck(duck) {
           clearInterval(intervalIdY); // Stop the interval
           duck.remove();
       }
-  }, 150); // Update every 1000 milliseconds
+  }, 100); // Update every 1000 milliseconds
 }
 
 const updateBoard = () => {
@@ -315,7 +352,7 @@ const updateBoard = () => {
   }
 
    addDuckEventListeners(); 
-  console.log(pixelEls)
+  
   return pixelEls
   
 };
@@ -352,7 +389,12 @@ class Duck {
     this.lives = this.lives;
     
     duck.style.position = 'absolute';
-    duck.style.background = this.color;
+
+    const svgFileName = `duck-upstroke-${this.breed}.svg`;
+    
+    duck.style.background = `url('assets/${svgFileName}')`; // Replace 'path/to/' with the actual path to your SVG files.
+    duck.style.backgroundSize = 'contain';  // Change this line
+    duck.style.backgroundRepeat = 'no-repeat'; // Optional: Prevent background from repeating
     duck.style.height = `${this.height}px`;
     duck.style.width = `${this.width}px`;
     duck.style.points = this.points;
@@ -369,19 +411,19 @@ class Duck {
 
 class BasicDuck extends Duck {
   constructor(){
-    super('basic',1, 'yellow', 80, 100)
+    super('basic',1, 'yellow', 120, 100)
   }
 }
 
 class AdvancedDuck extends Duck {
   constructor(){
-    super('advanced',1, 'orange', 40, 200)
+    super('advanced',1, 'orange', 90, 200)
   }
 }
 
 class ExpertDuck extends Duck {
   constructor(){
-    super('expert', 2, 'red', 60, 500)
+    super('expert', 2, 'red', 100, 500)
   }
 
 }

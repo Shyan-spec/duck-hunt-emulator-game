@@ -1,15 +1,37 @@
-@charset "UTF-8";
 body {
   margin: 0 auto;
   background-color: rgb(93, 180, 242);
     font-family: 'Press Start 2P', cursive;
+   
 }
 
 h1 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  
+  
+  position: relative;
+  bottom: 410px;
+  left: 141px;
+  font-size: 60px;
+  color:antiquewhite;
+  animation: pulsate 2s infinite;
 }
+
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+
 
 #countdown{
   display: flex;
@@ -35,7 +57,7 @@ h1 {
 }
 
 .grid {
-    
+  
     display: grid; 
     grid-auto-columns: 1fr; 
     grid-auto-rows: 1fr; 
@@ -68,8 +90,26 @@ h1 {
 
 .container {
   position: relative;
+  bottom:-100px;
   display: flex;
   justify-content: center;
-  align-items: cneter;
-}/*# sourceMappingURL=style.css.map */
+  align-items: center;
+}
+
+button{
+  position: relative;
+  left: 320px;
+  top: 141px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 30px;
+  border: none;
+  background: none;
+  padding: 0;
+  color: antiquewhite;
+  cursor: pointer;
+}
+
+button:hover {
+  color: green;
+}
 
